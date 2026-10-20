@@ -17,8 +17,9 @@ A 7-day hourly temperature forecast for any city, made by
 time-series model, and checked against what actually happened.
 
 - **Forecast:** Timestral reads the last 60 days of hourly temperature plus the weather service's
-  forecast as a known-future input, and predicts the next 168 hours with an 80% likely range. No
-  training on the location: it's zero-shot.
+  forecast as a known-future input, and predicts the next 168 hours with its 10–90% range (in the
+  Montreal backtest that raw range held about 70% of outcomes). No training on the location: it's
+  zero-shot.
 - **Track record:** the same forecast is rerun as of exactly 7 days ago, using only weather-service
   forecasts that had already been issued by then, and scored against observed temperatures,
   side by side with the weather service.
