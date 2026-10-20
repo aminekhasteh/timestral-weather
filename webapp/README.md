@@ -7,7 +7,7 @@ sdk: docker
 app_port: 7860
 pinned: false
 license: apache-2.0
-short_description: 7-day temperature forecast from a pretrained time-series model
+short_description: 7-day temperature forecasts from Mistral's Timestral
 ---
 
 # Timestral Weather
