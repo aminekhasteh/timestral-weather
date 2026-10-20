@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Timestral Weather</title>
+  <meta name="description" content="A 7-day temperature forecast from Timestral, a pretrained time-series model, checked every day against what actually happened.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,200..800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect x='13' y='3' width='6' height='26' rx='3' fill='%23dce2e8'/%3E%3Crect x='13' y='11' width='6' height='14' rx='3' fill='%232a78d6'/%3E%3C/svg%3E">
+</head>
+<body>
+  <header class="bar">
+    <a class="wordmark" href="./">Timestral Weather</a>
+    <form class="search" role="search" autocomplete="off" onsubmit="return false">
+      <label class="visually-hidden" for="q">Search for a city</label>
+      <input id="q" type="search" placeholder="Search for a city" role="combobox"
+             aria-autocomplete="list" aria-expanded="false" aria-controls="results">
+      <ul id="results" role="listbox" hidden></ul>
+    </form>
+    <div class="units" role="group" aria-label="Temperature unit">
+      <button type="button" data-unit="C" aria-pressed="true">°C</button>
+      <button type="button" data-unit="F" aria-pressed="false">°F</button>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="hero" aria-live="polite">
+      <div class="place">
+        <h1 id="place-name">&nbsp;</h1>
+        <p id="place-region" class="muted">&nbsp;</p>
+      </div>
+      <div class="now">
+        <p id="now-temp" class="now-temp" aria-label="Current temperature">–</p>
+        <div class="now-text">
+          <p id="summary" class="summary">Loading the forecast…</p>
+          <p id="now-note" class="muted small"></p>
+        </div>
+      </div>
+      <div id="error" class="error" hidden>
+        <p id="error-text"></p>
+        <button type="button" id="retry">Try again</button>
+      </div>
+    </section>
+
+    <section class="week" aria-labelledby="week-h">
+      <div class="section-head">
+        <h2 id="week-h">Next 7 days</h2>
+        <p class="key small">
+          <span class="key-bar" aria-hidden="true"></span>Timestral’s low to high
+          <span class="key-line" aria-hidden="true"></span>Weather service
+        </p>
+      </div>
+      <ol id="days" class="days"></ol>
+    </section>
+
+    <section class="hourly" aria-labelledby="hourly-h">
+      <div class="section-head">
+        <h2 id="hourly-h">Hour by hour</h2>
+        <p class="key small" id="hourly-key"></p>
+      </div>
+      <div id="chart-forecast" class="chart" data-height="300"></div>
+    </section>
+
+    <section class="record" aria-labelledby="record-h">
+      <h2 id="record-h">How did last week’s forecast do?</h2>
+      <p id="record-intro" class="lede"></p>
+      <div class="scores">
+        <div class="score score--timestral">
+          <p class="score-num" id="score-t">–</p>
+          <p class="score-label">Timestral’s average miss</p>
+        </div>
+        <div class="score score--service">
+          <p class="score-num" id="score-s">–</p>
+          <p class="score-label">Weather service’s average miss</p>
+        </div>
+        <p id="verdict" class="verdict"></p>
+      </div>
+      <p class="key small" id="record-key"></p>
+      <div id="chart-record" class="chart" data-height="260"></div>
+      <table class="misses">
+        <caption class="visually-hidden">Average miss per day, last week</caption>
+        <thead><tr><th scope="col">Day</th><th scope="col">Timestral</th><th scope="col">Weather service</th></tr></thead>
+        <tbody id="misses"></tbody>
+      </table>
+    </section>
+
+    <section class="about" aria-labelledby="about-h">
+      <h2 id="about-h">How it works</h2>
+      <div class="about-cols">
+        <p><a href="https://mistral.ai/news/timestral">Timestral</a> is a 28-million-parameter time-series model from Mistral AI. It was never trained on this place: it reads the last 60 days of hourly temperature and forecasts the next 168 hours.</p>
+        <p>It also reads the weather service’s forecast as a hint about what’s coming, and works out from the recent past how far to trust that hint here.</p>
+        <p>In a year-long test in Montreal, this was about 15% more accurate than the weather service alone, with the biggest gains in spring and summer and in the first 24 hours.</p>
+      </div>
+      <p class="muted small">Observed temperatures are Open-Meteo’s hourly analysis for these coordinates, not readings from a single weather station. The shaded band is the range Timestral expects the temperature to fall in 8 times out of 10.</p>
+    </section>
+  </main>
+
+  <footer class="foot small muted">
+    <!-- Add your links here, e.g. <a href="https://github.com/...">GitHub</a> -->
+    <p>Built by Amin Kharaghani.</p>
+    <p>Forecast model: <a href="https://huggingface.co/mistralai/Timestral-28M">Timestral-28M</a> by Mistral AI. Weather data: <a href="https://open-meteo.com/">Open-Meteo</a> (CC BY 4.0).</p>
+  </footer>
+
+  <div id="tooltip" class="tooltip" role="status" hidden></div>
+  <script src="app.js"></script>
+</body>
+</html>

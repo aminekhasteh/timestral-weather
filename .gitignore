@@ -1,0 +1,14 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+.pytest_cache/
+
+# Downloaded weather data and generated charts (recreated by the scripts)
+research/data/
+research/outputs/
+
+# OS / editor
+.DS_Store
+.idea/
+.vscode/

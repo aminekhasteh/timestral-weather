@@ -1,0 +1,16 @@
+[project]
+name = "timestral-weather"
+version = "0.1.0"
+description = "Zero-shot hourly temperature forecasting for Montreal with Mistral's Timestral"
+requires-python = ">=3.10"
+dependencies = [
+    "timestral @ git+https://github.com/mistralai/timestral.git",
+    "numpy>=1.24",
+    "pandas>=2.0",
+    "matplotlib>=3.7",
+    "certifi",
+    "statsmodels>=0.14",
+]
+
+[tool.uv]
+package = false
